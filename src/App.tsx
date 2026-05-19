@@ -72,140 +72,86 @@ function cn(...inputs: ClassValue[]) {
     }
   ];
 
-const projects = [
-  { title: "تجهيز مستودعات لوجستية", category: "نظام رش آلي سقف علوي", img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800" },
-  { title: "مباني إدارية ذكية", category: "أنظمة إنذار معنونة متكاملة", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800" },
-  { title: "مرافق صناعية كبرى", category: "شبكات مضخات إطفاء مركزية", img: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800" },
-  { title: "مستودعات تخزين طاقة", category: "أنظمة إطفاء بالغاز النظيف", img: "https://images.unsplash.com/photo-1596753173741-26c39178bb04?q=80&w=800" }
-];
 
 const ProductQuoteCard: React.FC<{ product: any, onAdd: (qty: number, opt: string) => void }> = ({ product, onAdd }) => {
   const [qty, setQty] = useState(1);
   const [opt, setOpt] = useState(product.options?.[0] || '');
-  const [isZoomed, setIsZoomed] = useState(false);
 
   return (
-    <>
-      <div className="bg-white rounded-[2.5rem] border border-slate-100 p-6 flex flex-col gap-6 shadow-sm hover:shadow-xl hover:border-red-100 transition-all group overflow-hidden">
-         <div className="relative aspect-video rounded-3xl overflow-hidden bg-slate-50 cursor-pointer" onClick={() => setIsZoomed(true)}>
-            <img src={product.img} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black text-red-600 uppercase tracking-widest shadow-sm">{product.model}</div>
-            {product.availability && (
-               <div className={cn("absolute bottom-4 right-4 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest", 
-                  product.availability === 'متوفر' ? "bg-green-500 text-white" : "bg-orange-500 text-white"
-               )}>
-                  {product.availability}
-               </div>
-            )}
-            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-               <div className="w-12 h-12 bg-white/30 backdrop-blur rounded-full flex items-center justify-center text-white border border-white/40">
-                  <Plus size={24} />
-               </div>
-            </div>
-         </div>
+    <div className="bg-white rounded-[2.5rem] border border-slate-100 p-8 flex flex-col gap-6 shadow-sm hover:shadow-xl hover:border-red-100 transition-all group overflow-hidden h-full">
+       <div className="flex justify-between items-start gap-4">
+          <div className="space-y-4">
+             <div className="inline-flex items-center px-3 py-1 bg-slate-50 rounded-full text-[10px] font-black text-red-600 uppercase tracking-widest border border-slate-100">{product.model}</div>
+             <div className="space-y-1 text-right">
+                <h4 className="text-xl font-black text-slate-900 leading-tight">{product.name}</h4>
+                <p className="text-xs text-slate-400 font-medium leading-relaxed line-clamp-3">{product.desc}</p>
+             </div>
+          </div>
+          {product.availability && (
+             <div className={cn("px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm shrink-0", 
+                product.availability === 'متوفر' ? "bg-green-500 text-white" : "bg-orange-500 text-white"
+             )}>
+                {product.availability}
+             </div>
+          )}
+       </div>
 
-         <div className="flex-1 space-y-2">
-            <h4 className="text-lg font-black">{product.name}</h4>
-            <p className="text-xs text-slate-400 font-medium leading-relaxed line-clamp-2">{product.desc}</p>
-         </div>
+       <div className="flex-1" />
 
-         <div className="space-y-4 pt-4 border-t border-slate-50">
-            <div className="grid grid-cols-2 gap-4">
-               {product.options && (
-                 <div className="space-y-1">
-                    <label className="text-[10px] font-black text-slate-400 uppercase mr-1">المواصفات</label>
-                    <select 
-                      value={opt}
-                      onChange={(e) => setOpt(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-red-200"
-                    >
-                       {product.options.map((o: string) => <option key={o} value={o}>{o}</option>)}
-                    </select>
-                 </div>
-               )}
+       <div className="space-y-6 pt-6 border-t border-slate-50">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+             {product.options && (
                <div className="space-y-1">
-                  <label className="text-[10px] font-black text-slate-400 uppercase mr-1">الكمية</label>
-                  <div className="flex items-center bg-slate-50 border border-slate-100 rounded-xl overflow-hidden">
-                     <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-8 h-8 flex items-center justify-center hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors cursor-pointer">
-                        <X size={10} className="rotate-45" />
-                     </button>
-                     <input 
-                       type="number" 
-                       value={qty} 
-                       onChange={(e) => setQty(parseInt(e.target.value) || 1)}
-                       className="w-full text-center bg-transparent text-xs font-black focus:outline-none" 
-                     />
-                     <button onClick={() => setQty(qty + 1)} className="w-8 h-8 flex items-center justify-center hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors cursor-pointer">
-                        <Plus size={12} />
-                     </button>
-                  </div>
+                  <label className="text-[10px] font-black text-slate-400 uppercase mr-1 block text-right">المواصفات</label>
+                  <select 
+                    value={opt}
+                    onChange={(e) => setOpt(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-bold focus:outline-none focus:border-red-200 transition-all"
+                  >
+                     {product.options.map((o: string) => <option key={o} value={o}>{o}</option>)}
+                  </select>
                </div>
-            </div>
+             )}
+             <div className={cn("space-y-1", !product.options && "col-span-1 sm:col-span-2")}>
+                <label className="text-[10px] font-black text-slate-400 uppercase mr-1 block text-right">الكمية</label>
+                <div className="flex items-center bg-slate-50 border border-slate-100 rounded-xl overflow-hidden h-full min-h-[46px]">
+                   <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-12 h-full flex items-center justify-center hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors cursor-pointer border-l border-slate-100">
+                      <X size={12} className="rotate-45" />
+                   </button>
+                   <input 
+                     type="number" 
+                     value={qty} 
+                     onChange={(e) => setQty(parseInt(e.target.value) || 1)}
+                     className="w-full text-center bg-transparent text-xs font-black focus:outline-none" 
+                   />
+                   <button onClick={() => setQty(qty + 1)} className="w-12 h-full flex items-center justify-center hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors cursor-pointer border-r border-slate-100">
+                      <Plus size={14} />
+                   </button>
+                </div>
+             </div>
+          </div>
 
-            <button 
-              onClick={() => onAdd(qty, opt)}
-              className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs hover:bg-red-600 transition-all flex items-center justify-center gap-3 shadow-lg shadow-black/5"
-            >
-               <Plus size={16} />
-               إضافة لطلب عرض السعر
-            </button>
-         </div>
-      </div>
-
-      <AnimatePresence>
-         {isZoomed && (
-            <motion.div 
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               exit={{ opacity: 0 }}
-               onClick={() => setIsZoomed(false)}
-               className="fixed inset-0 z-[300] bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-6 md:p-12"
-            >
-               <motion.div 
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  className="max-w-4xl w-full bg-white rounded-[3rem] overflow-hidden shadow-2xl relative"
-                  onClick={e => e.stopPropagation()}
-               >
-                  <button onClick={() => setIsZoomed(false)} className="absolute top-8 left-8 w-12 h-12 bg-white/90 rounded-full flex items-center justify-center text-slate-900 shadow-xl z-10 hover:bg-red-600 hover:text-white transition-colors">
-                     <X size={24} />
-                  </button>
-                  <div className="grid md:grid-cols-2">
-                     <div className="aspect-square bg-slate-50">
-                        <img src={product.img} className="w-full h-full object-cover" />
-                     </div>
-                     <div className="p-12 space-y-8 text-right self-center">
-                        <div className="space-y-4">
-                           <span className="px-4 py-1.5 bg-red-50 text-red-600 rounded-full text-xs font-black uppercase tracking-widest">{product.model}</span>
-                           <h3 className="text-4xl font-black text-slate-900">{product.name}</h3>
-                           <p className="text-slate-500 text-lg leading-relaxed font-medium">{product.desc}</p>
-                        </div>
-                        <div className="grid grid-cols-2 gap-6 bg-slate-50 p-6 rounded-3xl">
-                           <div>
-                              <div className="text-[10px] text-slate-400 font-black uppercase mb-1">الحالة</div>
-                              <div className="text-lg font-black text-slate-900">{product.availability}</div>
-                           </div>
-                           <div>
-                              <div className="text-[10px] text-slate-400 font-black uppercase mb-1">الشركة المصنعة</div>
-                              <div className="text-lg font-black text-slate-900">معتمدة دولياً</div>
-                           </div>
-                        </div>
-                        <button onClick={() => { onAdd(qty, opt); setIsZoomed(false); }} className="w-full py-5 bg-red-600 text-white rounded-2xl font-black shadow-2xl shadow-red-500/20 hover:bg-black transition-all">
-                           إضافة للطلب الآن
-                        </button>
-                     </div>
-                  </div>
-               </motion.div>
-            </motion.div>
-         )}
-      </AnimatePresence>
-    </>
+          <button 
+            onClick={() => onAdd(qty, opt)}
+            className="w-full py-5 bg-slate-900 text-white rounded-2xl font-black text-xs hover:bg-red-600 transition-all flex items-center justify-center gap-3 shadow-lg shadow-black/5 active:scale-95"
+          >
+             <Plus size={16} />
+             إضافة لطلب عرض السعر
+          </button>
+       </div>
+    </div>
   );
 };
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'home' | 'maintenance' | 'support' | 'admin' | 'quote' | 'admin_login' | 'fire_systems' | 'alarm_systems' | 'consultancy' | 'approvals' | 'risk_assessment' | 'safety_reports'>('home');
+  const [allProjects, setAllProjects] = useState([
+    { title: "تجهيز مستودعات لوجستية", category: "نظام رش آلي سقف علوي", img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800" },
+    { title: "مباني إدارية ذكية", category: "أنظمة إنذار معنونة متكاملة", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800" },
+    { title: "مرافق صناعية كبرى", category: "شبكات مضخات إطفاء مركزية", img: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800" },
+    { title: "مستودعات تخزين طاقة", category: "أنظمة إطفاء بالغاز النظيف", img: "https://images.unsplash.com/photo-1596753173741-26c39178bb04?q=80&w=800" }
+  ]);
   const [tickets, setTickets] = useState<any[]>([
     { id: 1, name: 'سارة أحمد', phone: '056000000', email: 'sara@example.com', type: 'عطل مفاجئ', description: 'لوحة الإنذار تصدر صوتاً مستمراً بدون وجود حريق.', status: 'new', date: new Date().toLocaleDateString('ar-SA') },
     { id: 2, name: 'فهد العتيبي', phone: '054000000', email: 'fahad@example.com', type: 'طلب مساعدة', description: 'كيف يمكنني تحديث عقود الصيانة السنوية؟', status: 'resolved', date: new Date().toLocaleDateString('ar-SA') }
@@ -221,7 +167,7 @@ export default function App() {
   const [submittedApproval, setSubmittedApproval] = useState<any>(null);
   const [submittedRiskAssessment, setSubmittedRiskAssessment] = useState<any>(null);
   const [submittedSafetyReport, setSubmittedSafetyReport] = useState<any>(null);
-  const [adminTab, setAdminTab] = useState<'tickets' | 'quotes' | 'approvals' | 'risk_assessment'>('tickets');
+  const [adminTab, setAdminTab] = useState<'tickets' | 'quotes' | 'approvals' | 'risk_assessment' | 'projects'>('tickets');
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
 
   // Check for existing session
@@ -271,12 +217,12 @@ export default function App() {
       title: "أنظمة إنذار الحريق الذكية",
       description: "حلول إنذار متطورة متوافقة مع معايير الدفاع المدني (المعنونة والتقليدية)",
       products: [
-        { id: "fa1", name: "لوحة تحكم معنونة", model: "Adv-X4", desc: "لوحة تحكم مركزية تدعم حتى 4 لوب، مع شاشة لمس وبرمجة متقدمة.", img: "https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=800", availability: "متوفر", options: ["1 لوب", "2 لوب", "4 لوب"] },
-        { id: "fa2", name: "كاشف دخان ضوئي", model: "SD-10", desc: "تقنية الكشف الضوئي الدقيقة لتقليل الإنذارات الكاذبة.", img: "https://images.unsplash.com/photo-1585131238915-9969703ef507?q=80&w=800", availability: "متوفر" },
-        { id: "fa3", name: "كاشف حراري ثابت", model: "HD-20", desc: "مثالي للمطابخ والجراجات والمناطق التي يكثر بها الأبخرة.", img: "https://images.unsplash.com/photo-1596753173741-26c39178bb04?q=80&w=800", availability: "متوفر" },
-        { id: "fa4", name: "كاسر زجاج يدوي", model: "MCP-01", desc: "نقطة استدعاء يدوية قابلة لإعادة الضبط مع غطاء حماية.", img: "https://images.unsplash.com/photo-1596524430615-b46475ddff6e?q=80&w=800", availability: "متوفر" },
-        { id: "fa5", name: "جرس إنذار أحمر", model: "BL-100", desc: "صوت تنبيه عالي جداً 95 ديسيبل، يغطي مساحات واسعة.", img: "https://plus.unsplash.com/premium_photo-1681400263625-f66f9ee1bced?q=80&w=800", availability: "متوفر", options: ["6 إنش", "8 إنش"] },
-        { id: "fa6", name: "سارينة مع فلاش", model: "SF-200", desc: "تنبيه صوتي وضوئي متكامل للممرات ومخارج الطوارئ.", img: "https://images.unsplash.com/photo-1599707334706-a728ee3e3943?q=80&w=800", availability: "طلب مسبق" }
+        { id: "fa1", name: "لوحة تحكم معنونة", model: "Adv-X4", desc: "لوحة تحكم مركزية تدعم حتى 4 لوب، مع شاشة لمس وبرمجة متقدمة.", availability: "متوفر", options: ["1 لوب", "2 لوب", "4 لوب"] },
+        { id: "fa2", name: "كاشف دخان ضوئي", model: "SD-10", desc: "تقنية الكشف الضوئي الدقيقة لتقليل الإنذارات الكاذبة.", availability: "متوفر" },
+        { id: "fa3", name: "كاشف حراري ثابت", model: "HD-20", desc: "مثالي للمطابخ والجراجات والمناطق التي يكثر بها الأبخرة.", availability: "متوفر" },
+        { id: "fa4", name: "كاسر زجاج يدوي", model: "MCP-01", desc: "نقطة استدعاء يدوية قابلة لإعادة الضبط مع غطاء حماية.", availability: "متوفر" },
+        { id: "fa5", name: "جرس إنذار أحمر", model: "BL-100", desc: "صوت تنبيه عالي جداً 95 ديسيبل، يغطي مساحات واسعة.", availability: "متوفر", options: ["6 إنش", "8 إنش"] },
+        { id: "fa6", name: "سارينة مع فلاش", model: "SF-200", desc: "تنبيه صوتي وضوئي متكامل للممرات ومخارج الطوارئ.", availability: "طلب مسبق" }
       ]
     },
     {
@@ -284,12 +230,12 @@ export default function App() {
       title: "معدات وأنظمة مكافحة الحريق",
       description: "أنظمة الإطفاء المائية والكيميائية لتأمين المنشآت الصناعية والتجارية",
       products: [
-        { id: "ff1", name: "طفاية بودرة جافة", model: "P-6", desc: "طفاية شاملة (A, B, C) معتمدة من الهيئة السعودية للمواصفات.", img: "https://images.unsplash.com/photo-1614032159089-8d82512a83f9?q=80&w=800", availability: "متوفر", options: ["1kg", "6kg", "12kg"] },
-        { id: "ff2", name: "طفاية ثاني أكسيد الكربون", model: "CO-5", desc: "لحرائق الكهرباء والمواد الحساسة، لا تترك مخلفات.", img: "https://images.unsplash.com/photo-1628157797769-cf72f0599182?q=80&w=800", availability: "متوفر", options: ["2kg", "5kg"] },
-        { id: "ff3", name: "صندوق خراطيم حريق", model: "HC-2", desc: "خزانة استيل مجلفن بخرطوم مطاطي 30 متر مع بكرة دوارة.", img: "https://images.unsplash.com/photo-1552526881-721ce8509abb?q=80&w=800", availability: "متوفر", options: ["1 إنش", "1.5 إنش"] },
-        { id: "ff4", name: "مضخة حريق ديزل", model: "D-Fire 500", desc: "وحدة ضخ متكاملة مع لوحة تحكم أوتوماتيكية وضمان شامل.", img: "https://images.unsplash.com/photo-1582139329536-e7284fece509?q=80&w=800", availability: "طلب مسبق" },
-        { id: "ff5", name: "رأس رشاش مياه", model: "SP-68", desc: "استجابة سريعة عند 68 درجة مئوية، تغطية واسعة.", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800", availability: "متوفر", options: ["نحاسي", "كروم"] },
-        { id: "ff6", name: "محبس حريق (هيدرنت)", model: "Hydrant-S", desc: "محبس دفاع مدني خارجي بفتحتين للربط السريع.", img: "https://images.unsplash.com/photo-1582491114539-780447012674?q=80&w=800", availability: "متوفر" }
+        { id: "ff1", name: "طفاية بودرة جافة", model: "P-6", desc: "طفاية شاملة (A, B, C) معتمدة من الهيئة السعودية للمواصفات.", availability: "متوفر", options: ["1kg", "6kg", "12kg"] },
+        { id: "ff2", name: "طفاية ثاني أكسيد الكربون", model: "CO-5", desc: "لحرائق الكهرباء والمواد الحساسة، لا تترك مخلفات.", availability: "متوفر", options: ["2kg", "5kg"] },
+        { id: "ff3", name: "صندوق خراطيم حريق", model: "HC-2", desc: "خزانة استيل مجلفن بخرطوم مطاطي 30 متر مع بكرة دوارة.", availability: "متوفر", options: ["1 إنش", "1.5 إنش"] },
+        { id: "ff4", name: "مضخة حريق ديزل", model: "D-Fire 500", desc: "وحدة ضخ متكاملة مع لوحة تحكم أوتوماتيكية وضمان شامل.", availability: "طلب مسبق" },
+        { id: "ff5", name: "رأس رشاش مياه", model: "SP-68", desc: "استجابة سريعة عند 68 درجة مئوية، تغطية واسعة.", availability: "متوفر", options: ["نحاسي", "كروم"] },
+        { id: "ff6", name: "محبس حريق (هيدرنت)", model: "Hydrant-S", desc: "محبس دفاع مدني خارجي بفتحتين للربط السريع.", availability: "متوفر" }
       ]
     },
     {
@@ -297,12 +243,12 @@ export default function App() {
       title: "حلول السلامة والحماية المتكاملة",
       description: "أنظمة المساندة والوقاية لضمان إخلاء آمن وحماية مدار الساعة",
       products: [
-        { id: "ss1", name: "لوحة مخرج طوارئ", model: "Exit-Sign", desc: "لوحة LED مضيئة تعمل عند انقطاع الكهرباء لمدة 3 ساعات.", img: "https://images.unsplash.com/photo-1533748937570-362c3f25622d?q=80&w=800", availability: "متوفر" },
-        { id: "ss2", name: "إضاءة طوارئ", model: "Em-Light", desc: "كشاف مزدوج الرأس عالي السطوع للإخلاء الآمن.", img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=800", availability: "متوفر" },
-        { id: "ss3", name: "لوحة تحكم أمنية", model: "Safety-Core", desc: "مركز ربط لجميع الحساسات وفتح الأبواب الآلي عند الحريق.", img: "https://images.unsplash.com/photo-1635338140306-bf2f0739ba61?q=80&w=800", availability: "متوفر" },
-        { id: "ss4", name: "كاميرا كشف حراري", model: "Thermal-C1", desc: "تنبيه مبكر عند ارتفاع درجات حرارة الأجهزة أو الكابلات.", img: "https://images.unsplash.com/photo-1516216628859-9bccecab13ca?q=80&w=800", availability: "طلب خاص" },
-        { id: "ss5", name: "خزان مياه حريق", model: "Tank-X", desc: "خزانات معزولة بأحجام سعة 50,000 لتر وما فوق.", img: "https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?q=80&w=800", availability: "متوفر", options: ["10k L", "25k L", "50k L"] },
-        { id: "ss6", name: "جهاز كشف تسرب غاز", model: "GD-30", desc: "كشف سريع وتنبيه صوتي ومرئي وربط مع المحابس.", img: "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=800", availability: "متوفر" }
+        { id: "ss1", name: "لوحة مخرج طوارئ", model: "Exit-Sign", desc: "لوحة LED مضيئة تعمل عند انقطاع الكهرباء لمدة 3 ساعات.", availability: "متوفر" },
+        { id: "ss2", name: "إضاءة طوارئ", model: "Em-Light", desc: "كشاف مزدوج الرأس عالي السطوع للإخلاء الآمن.", availability: "متوفر" },
+        { id: "ss3", name: "لوحة تحكم أمنية", model: "Safety-Core", desc: "مركز ربط لجميع الحساسات وفتح الأبواب الآلي عند الحريق.", availability: "متوفر" },
+        { id: "ss4", name: "كاميرا كشف حراري", model: "Thermal-C1", desc: "تنبيه مبكر عند ارتفاع درجات حرارة الأجهزة أو الكابلات.", availability: "طلب خاص" },
+        { id: "ss5", name: "خزان مياه حريق", model: "Tank-X", desc: "خزانات معزولة بأحجام سعة 50,000 لتر وما فوق.", availability: "متوفر", options: ["10k L", "25k L", "50k L"] },
+        { id: "ss6", name: "جهاز كشف تسرب غاز", model: "GD-30", desc: "كشف سريع وتنبيه صوتي ومرئي وربط مع المحابس.", availability: "متوفر" }
       ]
     }
   ];
@@ -553,7 +499,7 @@ export default function App() {
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-10">
-                  {projects.map((project, i) => (
+                  {allProjects.map((project, i) => (
                     <motion.div
                       key={i}
                       initial={{ opacity: 0, y: 20 }}
@@ -2257,6 +2203,12 @@ export default function App() {
                    >
                      عروض الأسعار
                    </button>
+                   <button 
+                     onClick={() => setAdminTab('projects')}
+                     className={cn("px-6 py-3 rounded-xl font-bold text-sm transition-all", adminTab === 'projects' ? "bg-white text-red-600 shadow-md" : "text-slate-500 hover:text-slate-900")}
+                   >
+                     إدارة المشاريع
+                   </button>
                 </div>
              </div>
 
@@ -2323,7 +2275,7 @@ export default function App() {
                       </div>
                    )}
                 </div>
-             ) : (
+             ) : adminTab === 'quotes' ? (
                 <div className="bg-white rounded-[3rem] shadow-xl border border-slate-100 overflow-hidden">
                    <div className="overflow-x-auto">
                       <table className="w-full text-right border-collapse">
@@ -2384,6 +2336,54 @@ export default function App() {
                          <p className="font-bold text-slate-400">لا توجد طلبات عروض أسعار حتى الآن</p>
                       </div>
                    )}
+                </div>
+             ) : (
+                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-right">
+                      {allProjects.map((project, idx) => (
+                        <div key={idx} className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-xl space-y-6 hover:border-red-100 transition-all group">
+                           <div className="aspect-video rounded-2xl overflow-hidden bg-slate-100 relative">
+                              <img src={project.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={project.title} />
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                 <Upload className="text-white" size={24} />
+                              </div>
+                           </div>
+                           <div className="space-y-4">
+                              <div className="space-y-1">
+                                 <h4 className="font-black text-slate-900">{project.title}</h4>
+                                 <p className="text-xs text-slate-400 font-bold">{project.category}</p>
+                              </div>
+                              <div className="space-y-2">
+                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mr-1">رابط صورة المشروع</label>
+                                 <div className="flex gap-2">
+                                    <input 
+                                      type="text" 
+                                      value={project.img}
+                                      onChange={(e) => {
+                                        const newProjects = [...allProjects];
+                                        newProjects[idx].img = e.target.value;
+                                        setAllProjects(newProjects);
+                                      }}
+                                      className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-[10px] font-sans focus:outline-none focus:border-red-600 focus:ring-4 focus:ring-red-600/5 transition-all"
+                                      placeholder="https://images.unsplash.com/..."
+                                    />
+                                    <button className="px-5 py-3 bg-red-600 text-white rounded-xl text-[10px] font-black hover:bg-slate-900 transition-all shadow-lg shadow-red-500/20 active:scale-95">تحديث</button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                      ))}
+                   </div>
+                   
+                   <div className="p-12 bg-red-50 rounded-[3rem] border border-red-100 text-center space-y-4">
+                      <div className="w-16 h-16 bg-red-600 text-white rounded-full flex items-center justify-center mx-auto shadow-xl">
+                         <Info size={32} />
+                      </div>
+                      <div className="space-y-2">
+                         <h4 className="text-xl font-black text-slate-900">تعليمات الصور</h4>
+                         <p className="text-sm text-slate-500 max-w-lg mx-auto font-medium">سيتم تطبيق التعديلات التي تقوم بها هنا فوراً على معرض أعمال الصفحة الرئيسية. يرجى التأكد من استخدام روابط صور صالحة وعالية الجودة (HD).</p>
+                      </div>
+                   </div>
                 </div>
              )}
 
