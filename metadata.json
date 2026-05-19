@@ -1,0 +1,8 @@
+{
+  "name": "الدرع الواقي لأنظمة الحريق",
+  "description": "Professional Fire Fighting and Alarm Systems website featuring modern safety solutions and expert maintenance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

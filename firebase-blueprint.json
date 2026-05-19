@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Public and private user data",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "coins": { "type": "integer" },
+        "level": { "type": "integer" },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "wins": { "type": "integer" },
+            "gamesPlayed": { "type": "integer" }
+          }
+        }
+      },
+      "required": ["displayName"]
+    },
+    "GameRoom": {
+      "title": "Ludo Game Room",
+      "description": "Active game session and lobby",
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["lobby", "playing", "finished"] },
+        "hostId": { "type": "string" },
+        "playerIds": { "type": "array", "items": { "type": "string" } },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "maxPlayers": { "type": "integer", "enum": [2, 3, 4] },
+            "turnTimeLimit": { "type": "integer" }
+          }
+        },
+        "gameState": {
+          "type": "object",
+          "properties": {
+            "currentPlayerIndex": { "type": "integer" },
+            "diceValue": { "type": "integer" },
+            "diceRolled": { "type": "boolean" },
+            "consecutiveSixes": { "type": "integer" },
+            "lastRollTime": { "type": "integer", "format": "timestamp" },
+            "tokens": {
+              "type": "object",
+              "description": "Map of playerId to 4 token positions"
+            },
+            "winnerList": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "players": {
+          "type": "object",
+          "description": "Map of userId to player detail (name, color, isBot)"
+        },
+        "spectators": {
+          "type": "object",
+          "description": "Map of userId to spectator detail"
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "rooms/{roomId}": {
+      "schema": "GameRoom",
+      "description": "Active and past game sessions"
+    }
+  }
+}
